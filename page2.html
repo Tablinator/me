@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="icon" type="image/png" href="icon.jpg">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>beter static</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            background-color: #222;
+            color: white;
+            font-family: Arial, sans-serif;
+            text-align: center;
+        }
+        canvas {
+            background: black;
+            border: 2px solid white;
+        }
+        .controls {
+            margin-top: 10px;
+        }
+        .hidden-text {
+            font-size: 24px;
+            margin-top: 10px;
+            letter-spacing: 5px;
+        }
+        .bright {
+            animation: flash 1s ease-in-out;
+        }
+        @keyframes flash {
+            0%, 100% { background-color: #222; color: white; }
+            50% { background-color: white; color: black; }
+        }
+        .game-over {
+            font-size: 30px;
+            margin-top: 20px;
+            color: red;
+            display: none;
+        }
+        .reset-btn {
+            display: none;
+            margin-top: 10px;
+            padding: 10px 20px;
+            font-size: 18px;
+            background: red;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <h1>Snake Game</h1>
+    <canvas id="gameCanvas" width="400" height="400"></canvas>
+    <div class="hidden-text" id="hiddenText">____</div>
+    <div class="controls">
+        <button onclick="changeDirection('ArrowUp')">⬆</button>
+        <div>
+            <button onclick="changeDirection('ArrowLeft')">⬅</button>
+            <button onclick="changeDirection('ArrowDown')">⬇</button>
+            <button onclick="changeDirection('ArrowRight')">➡</button>
+        </div>
+    </div>
+    <div class="game-over" id="gameOverText">YOU LOSE!</div>
+    <button class="reset-btn" id="resetButton" onclick="resetGame()">Reset</button>
+    
+    <script>
+        const canvas = document.getElementById("gameCanvas");
+        const ctx = canvas.getContext("2d");
+        const gridSize = 20;
+        let snake, direction, apple, collected, gameOver;
+        const letters = ["T", "a", "b", "l", "E"];
+        
+        function resetGame() {
+            snake = [{ x: 200, y: 200 }];
+            direction = "ArrowRight";
+            apple = getRandomPosition();
+            collected = 0;
+            gameOver = false;
+            document.getElementById("hiddenText").innerText = "____";
+            document.getElementById("gameOverText").style.display = "none";
+            document.getElementById("resetButton").style.display = "none";
+            gameLoop();
+        }
+        
+        function getRandomPosition() {
+            return {
+                x: Math.floor(Math.random() * (canvas.width / gridSize)) * gridSize,
+                y: Math.floor(Math.random() * (canvas.height / gridSize)) * gridSize
+            };
+        }
+        
+        function changeDirection(newDirection) {
+            if ((direction === "ArrowUp" && newDirection !== "ArrowDown") ||
+                (direction === "ArrowDown" && newDirection !== "ArrowUp") ||
+                (direction === "ArrowLeft" && newDirection !== "ArrowRight") ||
+                (direction === "ArrowRight" && newDirection !== "ArrowLeft")) {
+                direction = newDirection;
+            }
+        }
+        
+        document.addEventListener("keydown", (event) => changeDirection(event.key));
+        
+        function update() {
+            if (gameOver) return;
+            let head = { ...snake[0] };
+            if (direction === "ArrowUp") head.y -= gridSize;
+            if (direction === "ArrowDown") head.y += gridSize;
+            if (direction === "ArrowLeft") head.x -= gridSize;
+            if (direction === "ArrowRight") head.x += gridSize;
+
+            if (head.x < 0 || head.y < 0 || head.x >= canvas.width || head.y >= canvas.height ||
+                snake.some(segment => segment.x === head.x && segment.y === head.y)) {
+                gameOver = true;
+                document.getElementById("gameOverText").style.display = "block";
+                document.getElementById("resetButton").style.display = "block";
+                return;
+            }
+            
+            snake.unshift(head);
+            if (head.x === apple.x && head.y === apple.y) {
+                apple = getRandomPosition();
+                collected++;
+                document.getElementById("hiddenText").innerText = letters.slice(0, collected).join("") + "_".repeat(letters.length - collected);
+                if (collected === letters.length) {
+                    document.body.classList.add("bright");
+                    setTimeout(() => {
+                        document.body.classList.remove("bright");
+                        document.getElementById("hiddenText").innerText = "YOU WIN!";
+                    }, 1000);
+                }
+            } else {
+                snake.pop();
+            }
+        }
+        
+        function draw() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = "lime";
+            snake.forEach(segment => ctx.fillRect(segment.x, segment.y, gridSize, gridSize));
+            ctx.fillStyle = "red";
+            ctx.fillRect(apple.x, apple.y, gridSize, gridSize);
+        }
+        
+        function gameLoop() {
+            if (!gameOver) {
+                update();
+                draw();
+                setTimeout(gameLoop, 100);
+            }
+        }
+        
+        resetGame();
+    </script>
+</body>
+</html>

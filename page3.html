@@ -62,8 +62,7 @@
 
             ws.onopen = () => {
                 loadingScreen.style.display = "none";
-                chatContainer.style.display = "block";
-                promptUsername();
+                promptUsername(); // Show name input form after WebSocket connection is established
             };
 
             ws.onmessage = (event) => {
@@ -86,7 +85,7 @@
         }
 
         function promptUsername() {
-            usernameForm.style.display = "block"; // Show name input form after connection
+            usernameForm.style.display = "block"; // Show the username form after connection
         }
 
         function setUsername() {
@@ -94,7 +93,8 @@
             if (input.value.trim()) {
                 username = input.value.trim();
                 usernameForm.style.display = "none"; // Hide the name input form after setting the username
-                connectWebSocket();
+                chatContainer.style.display = "block"; // Show the chat container after name is set
+                connectWebSocket(); // Proceed with WebSocket connection after the username is set
             }
         }
 

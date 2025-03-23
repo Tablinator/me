@@ -1,14 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    
-    <link rel="icon" type="image/png" href="icon.png">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>мой сайт</title>
+
+    <!-- Favicon Fix: Ensure the correct path -->
+    <link rel="icon" type="image/png" href="./icon.png">
+    
     <style>
+        /* Body Styling */
         body {
-            cursor: url('cursor.png') 16 16, auto;
+            cursor: url('./cursor.png') 16 16, auto;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -18,6 +21,8 @@
             gap: 20px;
             font-family: Arial, sans-serif;
         }
+
+        /* Thumbnail Button Styling */
         .thumbnail {
             width: 360px;
             height: 200px;
@@ -28,13 +33,14 @@
             color: white;
             font-size: 24px;
             font-weight: bold;
-            cursor: inherit;
+            cursor: url('./cursor.png') 16 16, pointer;
             border-radius: 12px;
             transition: transform 0.3s ease, box-shadow 0.3s ease;
             box-shadow: 0 4px 10px rgba(255, 0, 0, 0.5);
             text-transform: uppercase;
             text-align: center;
         }
+
         .thumbnail:hover {
             transform: scale(1.08);
             box-shadow: 0 6px 20px rgba(255, 0, 0, 0.7);

@@ -128,9 +128,12 @@
         }
 
         function playMessageSound() {
-            const beep = new Audio("https://www.soundjay.com/button/beep-07.wav");
-            beep.volume = 0.3;
-            beep.play();
+            // Only play the sound if the user has interacted with the page
+            const audio = new Audio("/media/sounds/discord-notification.mp3");  // Update with a working URL
+            audio.volume = 0.3;
+            audio.play().catch((error) => {
+                console.error("Error playing sound:", error);
+            });
         }
 
         asciiEmojis.forEach(emoji => {

@@ -117,7 +117,14 @@
         }
 
         function showTyping() {
-            ws.send(JSON.stringify({ type: "typing", user: username }));
+            if (!typingTimeout) {
+                ws.send(JSON.stringify({ type: "typing", user: username }));
+            }
+
+            clearTimeout(typingTimeout);
+            typingTimeout = setTimeout(() => {
+                typingIndicator.textContent = "";
+            }, 2000);
         }
 
         function playMessageSound() {

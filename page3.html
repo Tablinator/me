@@ -7,7 +7,6 @@
     <link rel="icon" href="icon.jpg">
     <style>
         body { font-family: Arial, sans-serif; background: black; color: white; text-align: center; margin: 0; padding: 0; }
-        #loading { position: fixed; width: 100%; height: 100%; display: flex; justify-content: center; align-items: center; font-size: 24px; }
         #chatContainer { display: none; }
         #chat { max-width: 500px; margin: auto; padding: 15px; border: 2px solid #f39c12; background: rgba(0, 0, 0, 0.8); border-radius: 15px; }
         #messages { height: 300px; overflow-y: auto; padding: 10px; border-bottom: 2px solid #f39c12; text-align: left; }
@@ -20,12 +19,10 @@
         .emoji:hover { background: #f39c12; }
         .timestamp { font-size: 12px; color: gray; margin-left: 5px; }
         #typingIndicator { font-size: 14px; color: gray; }
-        #usernameForm { display: flex; flex-direction: column; align-items: center; margin-top: 20px; }
+        #usernameForm { flex-direction: column; align-items: center; margin-top: 20px; }
     </style>
 </head>
 <body>
-
-    <div id="loading">⏳ Подключение к серверу...</div>
 
     <div id="usernameForm">
         <h2>Введите имя</h2>
@@ -47,7 +44,6 @@
     <script>
         let ws;
         let username = "";
-        const loadingScreen = document.getElementById("loading");
         const chatContainer = document.getElementById("chatContainer");
         const usernameForm = document.getElementById("usernameForm");
         const messagesDiv = document.getElementById("messages");
@@ -61,8 +57,7 @@
             ws = new WebSocket("wss://good-thinkable-narwhal.glitch.me");
 
             ws.onopen = () => {
-                loadingScreen.style.display = "none";
-                promptUsername(); // Show name input form after WebSocket connection is established
+                usernameForm.style.display = "flex"; // Show the username input form after connection
             };
 
             ws.onmessage = (event) => {
@@ -84,17 +79,13 @@
             };
         }
 
-        function promptUsername() {
-            usernameForm.style.display = "block"; // Show the username form after connection
-        }
-
         function setUsername() {
             const input = document.getElementById("usernameInput");
             if (input.value.trim()) {
                 username = input.value.trim();
-                usernameForm.style.display = "none"; // Hide the name input form after setting the username
-                chatContainer.style.display = "block"; // Show the chat container after name is set
-                connectWebSocket(); // Proceed with WebSocket connection after the username is set
+                usernameForm.style.display = "none"; // Hide the username form after setting the name
+                chatContainer.style.display = "block"; // Show the chat container
+                connectWebSocket(); // Proceed with WebSocket connection after username is set
             }
         }
 
@@ -144,6 +135,8 @@
             };
             emojiPicker.appendChild(emojiElement);
         });
+
+        connectWebSocket(); // Start the WebSocket connection as soon as the page loads
     </script>
 
 </body>

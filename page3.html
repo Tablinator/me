@@ -27,13 +27,13 @@
 
     <div id="loading">⏳ Подключение к серверу...</div>
 
-    <div id="usernameForm">
+    <div id="usernameForm" style="display: none;">
         <h2>Введите имя</h2>
         <input type="text" id="usernameInput" placeholder="Ваше имя...">
         <button onclick="setUsername()">Войти в чат</button>
     </div>
 
-    <div id="chatContainer">
+    <div id="chatContainer" style="display: none;">
         <h2>💬 Чат Онлайн</h2>
         <div id="chat">
             <div id="messages"></div>
@@ -61,8 +61,7 @@
 
             ws.onopen = () => {
                 loadingScreen.style.display = "none";
-                chatContainer.style.display = "block";
-                ws.send(JSON.stringify({ type: "join", user: username }));
+                usernameForm.style.display = "block";  // Prompt the user to enter their name after connection
             };
 
             ws.onmessage = (event) => {
@@ -87,8 +86,10 @@
             const input = document.getElementById("usernameInput");
             if (input.value.trim()) {
                 username = input.value.trim();
-                usernameForm.style.display = "none";
+                usernameForm.style.display = "none";  // Hide the name input form
+                chatContainer.style.display = "block";  // Show the chat container
                 connectWebSocket();
+                ws.send(JSON.stringify({ type: "join", user: username }));  // Notify the server of the username
             }
         }
 
@@ -138,6 +139,9 @@
             };
             emojiPicker.appendChild(emojiElement);
         });
+
+        // Initialize WebSocket connection without username
+        connectWebSocket();
     </script>
 
 </body>

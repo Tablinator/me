@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Резюме - Иван Петров</title>
+    <link rel="icon" type="image/png" href="favicon.png">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #008080;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            position: relative;
+            gap: 20px;
+        }
+        .window {
+            background: #c0c0c0;
+            width: 400px;
+            border: 2px solid #000;
+            border-radius: 0;
+            box-shadow: 5px 5px 0px #808080;
+            overflow: hidden;
+        }
+        .window-header {
+            background: linear-gradient(to right, #000080, #0000a0);
+            color: white;
+            padding: 5px;
+            text-align: left;
+            font-weight: bold;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .window-header span {
+            flex: 1;
+            margin-left: 5px;
+        }
+        .buttons {
+            display: flex;
+            gap: 4px;
+            margin-right: 5px;
+        }
+        .button {
+            width: 12px;
+            height: 12px;
+            background: red;
+            border: 1px solid black;
+            display: inline-block;
+        }
+        .resume-card {
+            padding: 20px;
+            text-align: center;
+        }
+        .resume-card img {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            margin-bottom: 10px;
+            border: 3px solid #000080;
+        }
+        .resume-card h2 {
+            margin: 5px 0;
+            color: #333;
+        }
+        .resume-card p {
+            color: #222;
+            margin: 5px 0;
+        }
+        .social-links {
+            margin-top: 15px;
+        }
+        .social-links a {
+            display: inline-block;
+            margin: 5px;
+            text-decoration: none;
+            color: white;
+            background: #000080;
+            padding: 8px 12px;
+            border-radius: 2px;
+            transition: 0.3s;
+        }
+        .social-links a:hover {
+            background: #0000a0;
+        }
+    </style>
+</head>
+<body>
+    <div class="window">
+        <div class="window-header"><span>Резюме</span><div class="buttons"><div class="button"></div></div></div>
+        <div class="resume-card">
+            <img src="avatar.png" alt="Иван Петров">
+            <h2>Султанали</h2>
+            <p><strong>Web-разработчик</strong></p>
+            <p>📍 Актау, Казакстан</p>
+        </div>
+    </div>
+    <div class="window">
+        <div class="window-header"><span>Навыки</span><div class="buttons"><div class="button"></div></div></div>
+        <div class="resume-card">
+            <p>🔹 статик HTML, CSS, JavaScript</p>
+            <p>🔹 динамик Node.js</p>
+            <p>🔹 автомация (боты, crm)</p>
+        </div>
+    </div>
+    <div class="window">
+        <div class="window-header"><span>Опыт работы</span><div class="buttons"><div class="button"></div></div></div>
+        <div class="resume-card">
+            <p><strong>Front-End Разработчик</strong> - </p>
+            <p><strong>senior Разработчик</strong> - </p>
+        </div>
+    </div>
+    <div class="window">
+        <div class="window-header"><span>Контакты</span><div class="buttons"><div class="button"></div></div></div>
+        <div class="resume-card">
+            <div class="social-links">
+                <a href="#">VK</a>
+                <a href="#">Telegram</a>
+                <a href="#">Email</a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

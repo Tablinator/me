@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>💬 Чат Онлайн</title>
+    <link rel="icon" href="icon.jpg" type="image/jpg">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron&display=swap');
+
+        body {
+            font-family: 'Orbitron', sans-serif;
+            background: linear-gradient(to right, #000428, #004e92);
+            color: #f39c12;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+        }
+
+        #loading {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: black;
+            color: white;
+            font-size: 24px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        #chat {
+            display: none;
+            max-width: 500px;
+            margin: auto;
+            padding: 15px;
+            border: 2px solid #f39c12;
+            background: rgba(0, 0, 0, 0.8);
+            border-radius: 15px;
+        }
+
+        #messages {
+            height: 300px;
+            overflow-y: auto;
+            padding: 10px;
+            border-bottom: 2px solid #f39c12;
+            text-align: left;
+        }
+
+        input, button {
+            padding: 10px;
+            margin: 5px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        input {
+            width: 70%;
+        }
+
+        button {
+            background: #f39c12;
+            color: black;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #ffb700;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="loading">⏳ Подключение к серверу...</div>
+
+    <h2>💬 Чат Онлайн</h2>
+    <div id="chat">
+        <div id="messages"></div>
+        <input type="text" id="messageInput" placeholder="Введите сообщение...">
+        <button onclick="sendMessage()">📤 Отправить</button>
+    </div>
+
+    <script>
+        const ws = new WebSocket("wss://good-thinkable-narwhal.glitch.me"); // Замените на ваш WebSocket URL
+        const loadingScreen = document.getElementById("loading");
+        const chatContainer = document.getElementById("chat");
+
+        ws.onopen = () => {
+            loadingScreen.style.display = "none";
+            chatContainer.style.display = "block";
+        };
+
+        ws.onmessage = (event) => {
+            const data = JSON.parse(event.data);
+            if (data.type === "history") {
+                data.messages.forEach(showMessage);
+            } else {
+                showMessage(data);
+            }
+        };
+
+        function sendMessage() {
+            const input = document.getElementById("messageInput");
+            const message = input.value.trim();
+            if (message) {
+                const emojis = ["😀", "🔥", "🚀", "😎", "💡", "🎉"];
+                const randomEmoji = emojis[Math.floor(Math.random() * emojis.length)];
+                const data = { type: "message", text: `${message} ${randomEmoji}` };
+                ws.send(JSON.stringify(data));
+                input.value = "";
+            }
+        }
+
+        function showMessage(data) {
+            const messagesDiv = document.getElementById("messages");
+            const msgElement = document.createElement("p");
+            msgElement.textContent = data.text;
+            messagesDiv.appendChild(msgElement);
+            messagesDiv.scrollTop = messagesDiv.scrollHeight;
+        }
+    </script>
+
+</body>
+</html>
